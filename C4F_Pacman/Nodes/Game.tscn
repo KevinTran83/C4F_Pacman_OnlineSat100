@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://dmct6naore63u"]
+[gd_scene load_steps=15 format=3 uid="uid://dmct6naore63u"]
 
 [ext_resource type="Script" path="res://C4F_Pacman/Scripts/Pacman.gd" id="1_2w3ya"]
+[ext_resource type="PackedScene" uid="uid://cmlf6rx4c8kja" path="res://C4F_Pacman/Nodes/Ghost.tscn" id="1_ygqnw"]
 [ext_resource type="Texture2D" uid="uid://c83e8ynusrgya" path="res://C4F_Pacman/Sprites/Pacman.png" id="2_p34tc"]
 [ext_resource type="Texture2D" uid="uid://c7b6sl1h002o0" path="res://C4F_Pacman/Sprites/MazeTile.png" id="3_ewt5l"]
 
@@ -54,11 +55,26 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_kd185"]
+vertices = PackedVector2Array(501.977, 415.93, 686.477, 357.953, 973.977, 337.953, 973.977, 540.906, 727.977, 540.906, 255.992, 531.906, 635.727, 357.953, 501.977, 366.938, 1024.73, 589.906, 1127.72, 627.898, 40.75, 627.898, 727.977, 589.906, 1127.72, 38.9922, 1024.73, 337.953, 686.477, 221.961, 255.992, 366.938, 255.992, 221.961, 635.727, 221.961, 255.992, 415.93, 205.242, 531.906, 40.75, 38.9922, 205.242, 221.961)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3, 4, 5), PackedInt32Array(6, 1, 0, 7), PackedInt32Array(8, 9, 10, 11), PackedInt32Array(12, 9, 8, 13), PackedInt32Array(2, 1, 14, 12), PackedInt32Array(7, 15, 16, 17, 6), PackedInt32Array(5, 18, 0), PackedInt32Array(4, 11, 10, 19, 5), PackedInt32Array(12, 13, 2), PackedInt32Array(20, 12, 14, 17), PackedInt32Array(20, 17, 16), PackedInt32Array(20, 16, 21), PackedInt32Array(10, 20, 21, 19)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(10, 12, 19, 653, 1150, 647, 1153, 7)])
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g20ja"]
 texture = ExtResource("3_ewt5l")
 texture_region_size = Vector2i(25, 25)
+0:0/next_alternative_id = 4
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-12.5, -12.5, 12.5, -12.5, 12.5, 12.5, -12.5, 12.5)
+0:0/1 = 1
+0:0/1/modulate = Color(1, 0, 0, 1)
+0:0/1/physics_layer_0/polygon_0/points = PackedVector2Array(-12.5, -12.5, 12.5, -12.5, 12.5, 12.5, -12.5, 12.5)
+0:0/2 = 2
+0:0/2/modulate = Color(0, 0, 1, 1)
+0:0/2/physics_layer_0/polygon_0/points = PackedVector2Array(-12.5, -12.5, 12.5, -12.5, 12.5, 12.5, -12.5, 12.5)
+0:0/3 = 3
+0:0/3/modulate = Color(0, 1, 0, 1)
+0:0/3/physics_layer_0/polygon_0/points = PackedVector2Array(-12.5, -12.5, 12.5, -12.5, 12.5, 12.5, -12.5, 12.5)
 
 [sub_resource type="TileSet" id="TileSet_ktsqw"]
 tile_size = Vector2i(25, 25)
@@ -66,6 +82,27 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_g20ja")
 
 [node name="Game" type="Node2D"]
+
+[node name="Pinky" parent="." instance=ExtResource("1_ygqnw")]
+position = Vector2(376, 231)
+
+[node name="Inky" parent="." instance=ExtResource("1_ygqnw")]
+position = Vector2(482, 140)
+
+[node name="Body" parent="Inky" index="1"]
+modulate = Color(0, 1, 1, 1)
+
+[node name="Clyde" parent="." instance=ExtResource("1_ygqnw")]
+position = Vector2(482, 323)
+
+[node name="Body" parent="Clyde" index="1"]
+modulate = Color(1, 0.501961, 0, 1)
+
+[node name="Blinky" parent="." instance=ExtResource("1_ygqnw")]
+position = Vector2(577, 469)
+
+[node name="Body" parent="Blinky" index="1"]
+modulate = Color(1, 0, 0, 1)
 
 [node name="Pacman" type="CharacterBody2D" parent="."]
 position = Vector2(524, 237)
@@ -75,11 +112,19 @@ script = ExtResource("1_2w3ya")
 shape = SubResource("CircleShape2D_tqrrd")
 
 [node name="PacmanSprite" type="AnimatedSprite2D" parent="Pacman"]
+modulate = Color(1, 1, 0, 1)
 sprite_frames = SubResource("SpriteFrames_yhps8")
 animation = &"running"
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_kd185")
+
+[node name="TileMap" type="TileMap" parent="NavigationRegion2D"]
 scale = Vector2(1.22997, 1.15981)
 tile_set = SubResource("TileSet_ktsqw")
 format = 2
-layer_0/tile_data = PackedInt32Array(196608, 0, 0, 262144, 0, 0, 327680, 0, 0, 393216, 0, 0, 458752, 0, 0, 131072, 0, 0, 65536, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 6, 0, 0, 5, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 15, 0, 0, 17, 0, 0, 14, 0, 0, 16, 0, 0, 18, 0, 0, 19, 0, 0, 21, 0, 0, 20, 0, 0, 22, 0, 0, 23, 0, 0, 25, 0, 0, 24, 0, 0, 26, 0, 0, 27, 0, 0, 28, 0, 0, 29, 0, 0, 30, 0, 0, 31, 0, 0, 32, 0, 0, 33, 0, 0, 34, 0, 0, 35, 0, 0, 36, 0, 0, 37, 0, 0, 65573, 0, 0, 131109, 0, 0, 196645, 0, 0, 262181, 0, 0, 327717, 0, 0, 393253, 0, 0, 458789, 0, 0, 524325, 0, 0, 589861, 0, 0, 655397, 0, 0, 720933, 0, 0, 786469, 0, 0, 852005, 0, 0, 917541, 0, 0, 983077, 0, 0, 1048613, 0, 0, 1114149, 0, 0, 1179685, 0, 0, 1245221, 0, 0, 1310757, 0, 0, 1376293, 0, 0, 1441829, 0, 0, 1441827, 0, 0, 1441828, 0, 0, 1441826, 0, 0, 1441825, 0, 0, 1441823, 0, 0, 1441824, 0, 0, 1441819, 0, 0, 1441820, 0, 0, 1441821, 0, 0, 1441822, 0, 0, 1441818, 0, 0, 1441816, 0, 0, 1441815, 0, 0, 1441813, 0, 0, 1441817, 0, 0, 1441814, 0, 0, 1441812, 0, 0)
+layer_0/tile_data = PackedInt32Array(196608, 0, 0, 262144, 0, 0, 327680, 0, 0, 393216, 0, 0, 458752, 0, 0, 131072, 0, 0, 65536, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 6, 0, 0, 5, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 15, 0, 0, 17, 0, 0, 14, 0, 0, 16, 0, 0, 18, 0, 0, 19, 0, 0, 21, 0, 0, 20, 0, 0, 22, 0, 0, 23, 0, 0, 25, 0, 0, 24, 0, 0, 26, 0, 0, 27, 0, 0, 28, 0, 0, 29, 0, 0, 30, 0, 0, 31, 0, 0, 32, 0, 0, 33, 0, 0, 34, 0, 0, 35, 0, 0, 36, 0, 0, 37, 0, 0, 65573, 0, 0, 131109, 0, 0, 196645, 0, 0, 262181, 0, 0, 327717, 0, 0, 393253, 0, 0, 458789, 0, 0, 524325, 0, 0, 589861, 0, 0, 655397, 0, 0, 720933, 0, 0, 786469, 0, 0, 852005, 0, 0, 917541, 0, 0, 983077, 0, 0, 1048613, 0, 0, 1114149, 0, 0, 1179685, 0, 0, 1245221, 0, 0, 1310757, 0, 0, 1376293, 0, 0, 1441829, 0, 0, 1441827, 0, 0, 1441828, 0, 0, 1441826, 0, 0, 1441825, 0, 0, 1441823, 0, 0, 1441824, 0, 0, 1441819, 0, 0, 1441820, 0, 0, 1441821, 0, 0, 1441822, 0, 0, 1441818, 0, 0, 1441816, 0, 0, 1441815, 0, 0, 1441813, 0, 0, 1441817, 0, 0, 1441814, 0, 0, 1441812, 0, 0, 655381, 0, 65536, 589845, 0, 65536, 524309, 0, 65536, 720917, 0, 65536, 524288, 0, 131072, 589824, 0, 131072, 655360, 0, 131072, 720896, 0, 131072, 786432, 0, 131072, 851968, 0, 131072, 917504, 0, 131072, 983040, 0, 131072, 1048576, 0, 131072, 1114112, 0, 131072, 1179648, 0, 131072, 1245184, 0, 131072, 1310720, 0, 131072, 1376256, 0, 131072, 1441792, 0, 131072, 1441793, 0, 131072, 1441794, 0, 131072, 1441795, 0, 131072, 1441796, 0, 131072, 1441797, 0, 131072, 1441798, 0, 131072, 1441799, 0, 131072, 1441800, 0, 131072, 1441801, 0, 131072, 1441802, 0, 131072, 1441803, 0, 131072, 1441804, 0, 131072, 1441805, 0, 131072, 1441806, 0, 131072, 1441807, 0, 131072, 1441808, 0, 131072, 1441809, 0, 131072, 1441810, 0, 131072, 1441811, 0, 131072, 524295, 0, 65536, 589831, 0, 65536, 655367, 0, 65536, 720903, 0, 65536, 786439, 0, 65536, 851975, 0, 65536, 917511, 0, 65536, 983047, 0, 65536, 1048583, 0, 65536, 1114119, 0, 65536, 851976, 0, 65536, 851977, 0, 65536, 851978, 0, 65536, 851979, 0, 65536, 851980, 0, 65536, 851981, 0, 65536, 851982, 0, 65536, 851983, 0, 65536, 786464, 0, 196608, 852000, 0, 196608, 917536, 0, 196608, 983072, 0, 196608, 1048608, 0, 196608, 1114144, 0, 196608, 1179680, 0, 196608, 1245216, 0, 196608, 1245208, 0, 196608, 1245209, 0, 196608, 1245210, 0, 196608, 1245211, 0, 196608, 1245212, 0, 196608, 1245213, 0, 196608, 1245214, 0, 196608, 1245215, 0, 196608)
+
+[editable path="Inky"]
+[editable path="Clyde"]
+[editable path="Blinky"]

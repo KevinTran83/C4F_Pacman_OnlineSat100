@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmlf6rx4c8kja"]
+
+[ext_resource type="Texture2D" uid="uid://owhys8ge7wb6" path="res://C4F_Pacman/Sprites/Monster.png" id="1_ghqu2"]
+[ext_resource type="Script" path="res://C4F_Pacman/Scripts/Ghost.gd" id="1_nm7o7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_phxhb"]
+
+[node name="Ghost" type="CharacterBody2D"]
+script = ExtResource("1_nm7o7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_phxhb")
+
+[node name="Body" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 1, 1)
+texture = ExtResource("1_ghqu2")
+hframes = 2
+
+[node name="Eyes" type="Sprite2D" parent="."]
+texture = ExtResource("1_ghqu2")
+hframes = 2
+frame = 1
+
+[node name="NavAgent" type="NavigationAgent2D" parent="."]
